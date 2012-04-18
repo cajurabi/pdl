@@ -612,7 +612,7 @@ set_data_by_mmap(it,fname,len,shared,writable,creat,mode,trunc)
        int fd;
        pdl_freedata(it);
        fd = open(fname,(writable && shared ? O_RDWR : O_RDONLY)|
-               (creat ? O_CREAT : 0),mode);
+               (creat ? O_CREAT : 0)|O_LARGEFILE,mode);
        if(fd < 0) {
                croak("Error opening file");
        }
