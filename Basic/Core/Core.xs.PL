@@ -611,8 +611,15 @@ set_data_by_mmap(it,fname,len,shared,writable,creat,mode,trunc)
 #ifdef USE_MMAP
        int fd;
        pdl_freedata(it);
+#endif
+#if defined(HAS_LARGE_FILES) && defined(USE_MMAP)
        fd = open(fname,(writable && shared ? O_RDWR : O_RDONLY)|
                (creat ? O_CREAT : 0)|O_LARGEFILE,mode);
+#else
+       fd = open(fname,(writable && shared ? O_RDWR : O_RDONLY)|
+               (creat ? O_CREAT : 0),mode);
+#endif
+#ifdef USE_MMAP
        if(fd < 0) {
                croak("Error opening file");
        }
